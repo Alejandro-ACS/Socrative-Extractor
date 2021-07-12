@@ -37,20 +37,33 @@ if array1.ok:
         x = 0
 
         while x != len(response['questions']):
+            
             y = x + 1
+            
             if response['questions'][x]['question_image'] == None:
+                
                 print("\nPregunta " + str(y) + ": " + str(response['questions'][x]['question_text']) + "\n")
+            
             else:
+                
                 print("\nPregunta " + str(y) + ": " + str(response['questions'][x]['question_text']) + "\n(Img url: " + str(response['questions'][x]['question_image']['url']) +")\n")
     
             if str(response['questions'][x]['type']) == "MC" or str(response['questions'][x]['type']) == "TF":
+                
                 z = 0
+                
                 while z != len(response['questions'][x]['answers']):
+                    
                     a = z + 1
+                    
                     print(str(a) + ") " + str(response['questions'][x]['answers'][z]['text']) + " (" + str(response['questions'][x]['answers'][z]['id']) + ")")
+                    
                     z = z + 1
+            
             elif str(response['questions'][x]['type']) == "FR":
+                
                 print(" - Respuesta libre")
+            
             x = x + 1
 
     else:
@@ -58,4 +71,5 @@ if array1.ok:
         print("\nAula inactiva")
 
 else:
+    
     print("\nNo existe el aula")
