@@ -1,5 +1,5 @@
 # Socrative
-Get questions and answers from the Socrative platform without logging in.
+Get questions and possible answers from the Socrative platform without logging in.
 
 # Requeriments
 You need to install the json and requests libraries with the nexts command.
