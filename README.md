@@ -1,4 +1,4 @@
-# Socrative
+# Socrative Extractor
 Get questions and possible answers from the Socrative platform without logging in.
 
 # Requeriments
