@@ -7,6 +7,13 @@ class Question:
         self.answers = []
         self.image = None
 
+    def chatgpt_format(self):
+        question = self.question_text
+        if self.question_type == "MC" or self.question_type == "TF":
+            for answer in self.answers:
+                question += "\n- " + answer.answer_text
+        return question
+
     def print_simple_format(self):
         print("\n" + self.question_text)
         if self.question_type == "MC" or self.question_type == "TF":
