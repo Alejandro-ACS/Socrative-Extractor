@@ -1,76 +1,29 @@
-import requests
-
 import json
+import Network
+import Parser
 
-roomName = str(input("Ingrese el nombre del aula: ")).lower()
 
-url = "https://api.socrative.com/rooms/api/current-activity/" + roomName
+def main():
+    room_code = str(input("Ingrese el nombre del aula: ")).lower()
+    response_api = Network.get_api_data(room_code=room_code)
 
-data = {
-    'room': roomName
-}
-
-array1 = requests.get(url, data=data)
-
-if array1.ok:
-    cache = json.loads(array1.content)
-
-    if cache != {}:
-
-        activity_id = cache['activity_id']
-
-        url1 = "https://teacher.socrative.com/quizzes/"+ str(activity_id) + "/student?room=" + roomName
-
-        cookies_dict = {
-            'sa': 'SA_0AFd_7NneDk0WafSUS0u0fIkHIJFmz3X'
-        }
-
-        resp = requests.get(url1, cookies=cookies_dict)
-
-        response = json.loads(resp.content)
-
-        print("\nNombre: " + str(response['name']))
-
-        print("Id: " + str(activity_id))
-
-        print("Numero de preguntas: " + str(len(response['questions'])))
-
-        x = 0
-
-        while x != len(response['questions']):
-            
-            y = x + 1
-            
-            if response['questions'][x]['question_image'] == None:
-                
-                print("\nPregunta " + str(y) + ": " + str(response['questions'][x]['question_text']) + "\n")
-            
-            else:
-                
-                print("\nPregunta " + str(y) + ": " + str(response['questions'][x]['question_text']) + "\n(Img url: " + str(response['questions'][x]['question_image']['url']) +")\n")
-    
-            if str(response['questions'][x]['type']) == "MC" or str(response['questions'][x]['type']) == "TF":
-                
-                z = 0
-                
-                while z != len(response['questions'][x]['answers']):
-                    
-                    a = z + 1
-                    
-                    print(str(a) + ") " + str(response['questions'][x]['answers'][z]['text']) + " (" + str(response['questions'][x]['answers'][z]['id']) + ")")
-                    
-                    z = z + 1
-            
-            elif str(response['questions'][x]['type']) == "FR":
-                
-                print(" - Respuesta libre")
-            
-            x = x + 1
-
+    if response_api.ok:
+        api_json_content = json.loads(response_api.content)
+        if api_json_content != {}:
+            activity_id = str(api_json_content['activity_id'])
+            response_quiz = Network.get_quiz_data(activity_id=activity_id, room_code=room_code)
+            quiz_json_content = json.loads(response_quiz.content)
+            print("\n")
+            print("Nombre: " + str(quiz_json_content['name']))
+            print("Id: " + activity_id)
+            print("Numero de preguntas: " + str(len(quiz_json_content['questions'])))
+            questions = Parser.get_questions_from_quiz_content(quiz_json_content=quiz_json_content)
+            for question in questions:
+                question.print_simple_format()
+        else:
+            print("\nAula inactiva")
     else:
+        print("\nNo existe el aula")
 
-        print("\nAula inactiva")
 
-else:
-    
-    print("\nNo existe el aula")
+if __name__ == '__main__': main()
