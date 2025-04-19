@@ -14,5 +14,3 @@ You just need to download the Socrative.py file and run it with the following co
 ```bash
 python Socrative.py
 ```
-Or you can run it on Google Colab.
-https://colab.research.google.com/drive/1m-YnCISBovjWqf0s1aeTZg13FA1ZqVh6?usp=sharing
